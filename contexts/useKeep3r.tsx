@@ -151,17 +151,18 @@ export const Keep3rContextApp = ({children}: {children: ReactElement}): ReactEle
 			keep3rV2.disputes(address),
 			keep3rV2.disputers(address),
 			keep3rV2.slashers(address),
-			keep3rV2.governance(),
 			keep3rV2.hasBonded(address),
 			keep3rV2.bondTime(),
 			keep3rV2.unbondTime()
 		];
+
 		const	results = await ethcallProvider.tryAll(calls) as never[];
+
 		performBatchedUpdates((): void => {
 			const	[
 				kp3rBalance, kp3rAllowance, bonds,
 				pendingBonds, pendingUnbonds, canActivateAfter,
-				canWithdrawAfter, disputes, disputers, slashers, governance,
+				canWithdrawAfter, disputes, disputers, slashers,
 				hasBonded, bondTime, unbondTime
 			] = results;
 
@@ -175,7 +176,7 @@ export const Keep3rContextApp = ({children}: {children: ReactElement}): ReactEle
 				canWithdrawAfter: canWithdrawAfter,
 				isDisputer: disputers,
 				isSlasher: slashers,
-				isGovernance: governance === address,
+				isGovernance: false,
 				hasDispute: disputes,
 				hasBonded: hasBonded,
 				bondTime: bondTime,
