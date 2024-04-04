@@ -30,7 +30,9 @@ module.exports = (phase) => withPWA({
 			1: 'https://1rpc.io/eth' || process.env.RPC_URL_MAINNET,
 			137: process.env.RPC_URL_POLYGON,
 			250: process.env.RPC_URL_FANTOM,
-			42161: process.env.RPC_URL_ARBITRUM
+			42161: process.env.RPC_URL_ARBITRUM,
+			11155111: process.env.RPC_URL_SEPOLIA,
+			11155420: process.env.RPC_URL_OPTIMISM_SEPOLIA
 		},
 		ALCHEMY_KEY: process.env.ALCHEMY_KEY,
 		INFURA_KEY: process.env.INFURA_KEY,
