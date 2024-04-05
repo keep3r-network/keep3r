@@ -98,12 +98,12 @@ function	PanelMintTokens({chainID}: {chainID: number}): ReactElement {
 			.perform();
 	}
 
-	async function	onMint(pairAddress: string, amount1: BigNumber, amount2: BigNumber): Promise<void> {
+	async function	onMint(pairAddress: string, amount1: BigNumber, amount2: BigNumber, isTestnet: boolean): Promise<void> {
 		if (!isActive || txStatusMint.pending) {
 			return;
 		}
 		new Transaction(provider, mint, set_txStatusMint)
-			.populate(pairAddress, amount1, amount2)
+			.populate(pairAddress, amount1, amount2, isTestnet)
 			.onSuccess(async (): Promise<void> => {
 				await Promise.all([getPairs(), getPairsBalance()]);
 				performBatchedUpdates((): void => {
@@ -114,7 +114,8 @@ function	PanelMintTokens({chainID}: {chainID: number}): ReactElement {
 			.perform();
 	}
 
-	function	renderApproveOrMintButton(): ReactElement {
+	function	renderApproveOrMintButton({chainID}: { chainID: number }): ReactElement {
+		const isTestnet = [11155111].includes(chainID);
 		const	allowance1 = ethers.utils.formatUnits(userPairPosition?.allowanceOfToken1 || 0, 18);
 		const	allowance2 = ethers.utils.formatUnits(userPairPosition?.allowanceOfToken2 || 0, 18);
 		const	isAmountOverflow = (
@@ -160,7 +161,8 @@ function	PanelMintTokens({chainID}: {chainID: number}): ReactElement {
 					onMint(
 						pair.addressOfPair,
 						toSafeAmount(amountToken1, userPairPosition?.balanceOfToken1 || 0),
-						toSafeAmount(amountToken2, userPairPosition?.balanceOfToken2 || 0)
+						toSafeAmount(amountToken2, userPairPosition?.balanceOfToken2 || 0),
+						isTestnet
 					);
 				}}
 				isBusy={txStatusMint.pending}
@@ -193,7 +195,7 @@ function	PanelMintTokens({chainID}: {chainID: number}): ReactElement {
 							decimals={18} />
 					</div>
 					<div>
-						{renderApproveOrMintButton()}
+						{renderApproveOrMintButton({chainID})}
 					</div>
 				</div>
 			</div>
@@ -310,7 +312,7 @@ function	SectionActionsAddLiquidity({chainID}: {chainID: number}): ReactElement 
 
 function	Wrapper({chainID}: {chainID: number}): ReactElement {
 	const	{address} = useWeb3();
-	if ([1, 1337, 5].includes(chainID)) {
+	if ([1, 1337, 5, 11155111].includes(chainID)) {
 		return (
 			<div
 				className={'flex flex-col p-6'}
