@@ -30,7 +30,9 @@ module.exports = (phase) => withPWA({
 			1: 'https://1rpc.io/eth' || process.env.RPC_URL_MAINNET,
 			137: process.env.RPC_URL_POLYGON,
 			250: process.env.RPC_URL_FANTOM,
-			42161: process.env.RPC_URL_ARBITRUM
+			42161: process.env.RPC_URL_ARBITRUM,
+			11155111: process.env.RPC_URL_SEPOLIA,
+			11155420: process.env.RPC_URL_OPTIMISM_SEPOLIA
 		},
 		ALCHEMY_KEY: process.env.ALCHEMY_KEY,
 		INFURA_KEY: process.env.INFURA_KEY,
@@ -99,7 +101,7 @@ module.exports = (phase) => withPWA({
 				KEEP3R_V2_ADDR: '0xf171B63F97018ADff9Bb15F065c6B6CDA378d320',
 				KP3R_TOKEN_ADDR: '0x80B4327021946fF962d570c808B6aaC47224AeF1',
 				WETH_TOKEN_ADDR: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14',
-				KLP_KP3R_WETH_ADDR: '0xCc474D82Bc50A0327BA14B3291f71E44833Fae40',
+				KLP_KP3R_WETH_ADDR: '0xf10fF1eec2DE6549df9D371B12e504E1c3810E82',
 				UNI_KP3R_WETH_ADDR: '0xb39Dea2246Ac99575eebc86A2590BADF046eda91',
 
 				//Offchain

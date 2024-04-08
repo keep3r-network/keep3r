@@ -15,6 +15,7 @@ import type * as TJobTypes from 'contexts/useJob.d';
 import type {BigNumber} from 'ethers';
 import type {ReactElement} from 'react';
 import type {TRegistry} from 'utils/registry';
+import useWeb3 from '@yearn-finance/web-lib/contexts/useWeb3';
 
 const	defaultProps = {
 	jobStatus: {
@@ -55,6 +56,7 @@ export const JobContextApp = ({jobAddress, chainID, children}: {
 }): ReactElement => {
 	const	[jobStatus, set_jobStatus] = useState<TJobTypes.TJobStatus>(defaultProps.jobStatus);
 	const	[, set_nonce] = useState(0);
+	const	{provider} = useWeb3();
 
 	const	chainRegistry = useMemo((): TRegistry => {
 		const	_registry: TRegistry = {};
@@ -70,14 +72,16 @@ export const JobContextApp = ({jobAddress, chainID, children}: {
 	**	Data includes some on-chain related ones, but also some off-chain
 	**	(stats) related ones, fetched from our backend
 	***************************************************************************/
-	const getJobStatus = useCallback(async (): Promise<void> => {
+	const getJobStatus = useCallback(async (
+		_provider: ethers.providers.JsonRpcProvider = provider
+	): Promise<void> => {
 		if (!jobAddress) {
 			return;
 		}
-		
-		const	_provider = getProvider(chainID);
-		const	{timestamp} = await _provider.getBlock('latest');
-		const	ethcallProvider = await newEthCallProvider(_provider);
+
+		const	_currentProvider = _provider || getProvider(chainID);
+		const	{timestamp} = await _currentProvider.getBlock('latest');
+		const	ethcallProvider = await newEthCallProvider(_currentProvider);
 		const	KEEP3R_V2_ADDR = toAddress(getEnv(chainID).KEEP3R_V2_ADDR);
 		const	KLP_KP3R_WETH_ADDR = toAddress(getEnv(chainID).KLP_KP3R_WETH_ADDR);
 		const	keep3rV2 = new Contract(KEEP3R_V2_ADDR, KEEP3RV2_ABI);

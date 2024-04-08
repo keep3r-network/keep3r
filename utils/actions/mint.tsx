@@ -9,7 +9,8 @@ export async function	mint(
 	provider: ethers.providers.Web3Provider,
 	pair: string,
 	amountToken1: ethers.BigNumber,
-	amountToken2: ethers.BigNumber
+	amountToken2: ethers.BigNumber,
+	isTestnet = false
 ): Promise<TTxResponse> {
 	const	signer = provider.getSigner();
 	const	address = await signer.getAddress();
@@ -24,8 +25,8 @@ export async function	mint(
 	return await handleTx(contract.mint(
 		amountToken1, //amount0Desired
 		amountToken2, //amount1Desired
-		ethers.utils.parseUnits((amountToken1String * 0.995).toFixed(18), 18),
-		ethers.utils.parseUnits((amountToken2String * 0.995).toFixed(18), 18),
+		isTestnet ? 0 : ethers.utils.parseUnits((amountToken1String * 0.995).toFixed(18), 18),
+		isTestnet ? 0 : ethers.utils.parseUnits((amountToken2String * 0.995).toFixed(18), 18),
 		address //to
 	));
 }
