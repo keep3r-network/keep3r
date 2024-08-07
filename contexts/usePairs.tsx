@@ -67,7 +67,7 @@ export const PairsContextApp = ({children}: {children: ReactElement}): ReactElem
 			const	calls = [pairContract.position()];
 			const	[results, {pool}] = await Promise.all([
 				ethcallProvider.tryAll(calls),
-				request(process.env.SUBGRAPH_URI, `{
+				request((process.env.SUBGRAPH_URI || ''), `{
 					pool(id: "${pair.addressOfUni.toLowerCase()}"){
 						token0Price
 						token1Price
