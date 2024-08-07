@@ -67,7 +67,7 @@ export const PairsContextApp = ({children}: {children: ReactElement}): ReactElem
 			const	calls = [pairContract.position()];
 			const	[results, {pool}] = await Promise.all([
 				ethcallProvider.tryAll(calls),
-				request('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3', `{
+				request(process.env.SUBGRAPH_URI, `{
 					pool(id: "${pair.addressOfUni.toLowerCase()}"){
 						token0Price
 						token1Price
